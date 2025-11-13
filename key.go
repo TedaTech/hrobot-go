@@ -49,3 +49,12 @@ func (c *Client) KeySet(input *models.KeySetInput) (*models.Key, error) {
 
 	return &keyResp.Key, nil
 }
+
+func (c *Client) KeyDelete(fingerprint string) error {
+	url := fmt.Sprintf(c.baseURL+"/key/%s", fingerprint)
+	_, err := c.doDeleteRequest(url)
+	if err != nil {
+		return err
+	}
+	return nil
+}

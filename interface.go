@@ -15,6 +15,7 @@ type RobotClient interface {
 	ServerReverse(id int) (*models.Cancellation, error)
 	KeyGetList() ([]models.Key, error)
 	KeySet(input *models.KeySetInput) (*models.Key, error)
+	KeyDelete(fingerprint string) error
 	IPGetList() ([]models.IP, error)
 	RDnsGetList() ([]models.Rdns, error)
 	RDnsGet(ip string) (*models.Rdns, error)

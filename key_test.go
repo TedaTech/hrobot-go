@@ -102,3 +102,50 @@ func (s *ClientSuite) TestKeySetSuccess(c *C) {
 	c.Assert(linux.Name, Equals, "NewKey")
 	c.Assert(linux.Data, Equals, "ssh-rsa AAAAB3NzaC1yc+...")
 }
+
+func (s *ClientSuite) TestKeyDeleteSuccess(c *C) {
+	testFingerprint := "fi:ng:er:pr:in:t0:00:00:00:00:00:00:00:00:00:00"
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		c.Assert(r.Method, Equals, http.MethodDelete)
+		c.Assert(r.URL.Path, Equals, "/key/"+testFingerprint)
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer ts.Close()
+
+	robotClient := client.NewBasicAuthClient("user", "pass")
+	robotClient.SetBaseURL(ts.URL)
+
+	err := robotClient.KeyDelete(testFingerprint)
+	c.Assert(err, IsNil)
+}
+
+func (s *ClientSuite) TestKeyDeleteNotFound(c *C) {
+	testFingerprint := "nonexistent:fingerprint"
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		_, err := w.Write([]byte(`{"error":{"status":404,"code":"NOT_FOUND","message":"SSH key not found"}}`))
+		c.Assert(err, IsNil)
+	}))
+	defer ts.Close()
+
+	robotClient := client.NewBasicAuthClient("user", "pass")
+	robotClient.SetBaseURL(ts.URL)
+
+	err := robotClient.KeyDelete(testFingerprint)
+	c.Assert(err, Not(IsNil))
+}
+
+func (s *ClientSuite) TestKeyDeleteServerError(c *C) {
+	testFingerprint := "fi:ng:er:pr:in:t0:00:00:00:00:00:00:00:00:00:00"
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}))
+	defer ts.Close()
+
+	robotClient := client.NewBasicAuthClient("user", "pass")
+	robotClient.SetBaseURL(ts.URL)
+
+	err := robotClient.KeyDelete(testFingerprint)
+	c.Assert(err, Not(IsNil))
+}
