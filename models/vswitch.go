@@ -35,7 +35,7 @@ type VSwitchSubnet struct {
 type VSwitchCloudNet struct {
 	ID      int    `json:"id"`
 	IP      string `json:"ip"`
-	Mask    string `json:"mask"`
+	Mask    int    `json:"mask"`
 	Gateway string `json:"gateway"`
 }
 
