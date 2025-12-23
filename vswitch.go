@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/syself/hrobot-go/models"
+	"github.com/TedaTech/hrobot-go/models"
 )
 
 // VSwitchGetList returns all vSwitches.

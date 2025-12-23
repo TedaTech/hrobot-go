@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/syself/hrobot-go/models"
+	"github.com/TedaTech/hrobot-go/models"
 )
 
 const (
