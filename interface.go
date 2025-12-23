@@ -1,6 +1,6 @@
 package client
 
-import "github.com/syself/hrobot-go/models"
+import "github.com/TedaTech/hrobot-go/models"
 
 type RobotClient interface {
 	SetBaseURL(baseURL string)
@@ -15,6 +15,7 @@ type RobotClient interface {
 	ServerReverse(id int) (*models.Cancellation, error)
 	KeyGetList() ([]models.Key, error)
 	KeySet(input *models.KeySetInput) (*models.Key, error)
+	KeyDelete(fingerprint string) error
 	IPGetList() ([]models.IP, error)
 	RDnsGetList() ([]models.Rdns, error)
 	RDnsGet(ip string) (*models.Rdns, error)
@@ -28,4 +29,9 @@ type RobotClient interface {
 	ResetSet(id int, input *models.ResetSetInput) (*models.ResetPost, error)
 	FailoverGetList() ([]models.Failover, error)
 	FailoverGet(ip string) (*models.Failover, error)
+	VSwitchGetList() ([]models.VSwitch, error)
+	VSwitchGet(id int) (*models.VSwitch, error)
+	VSwitchCreate(input *models.VSwitchCreateInput) (*models.VSwitch, error)
+	VSwitchAddServer(vswitchID, serverNumber int) error
+	VSwitchRemoveServer(vswitchID, serverNumber int) error
 }

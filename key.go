@@ -5,7 +5,7 @@ import (
 	"fmt"
 	neturl "net/url"
 
-	"github.com/syself/hrobot-go/models"
+	"github.com/TedaTech/hrobot-go/models"
 )
 
 func (c *Client) KeyGetList() ([]models.Key, error) {
@@ -48,4 +48,13 @@ func (c *Client) KeySet(input *models.KeySetInput) (*models.Key, error) {
 	}
 
 	return &keyResp.Key, nil
+}
+
+func (c *Client) KeyDelete(fingerprint string) error {
+	url := fmt.Sprintf(c.baseURL+"/key/%s", fingerprint)
+	_, err := c.doDeleteRequest(url)
+	if err != nil {
+		return err
+	}
+	return nil
 }

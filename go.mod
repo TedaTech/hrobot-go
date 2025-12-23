@@ -1,4 +1,4 @@
-module github.com/syself/hrobot-go
+module github.com/TedaTech/hrobot-go
 
 go 1.17
 
