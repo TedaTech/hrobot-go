@@ -29,12 +29,48 @@ func (c *Client) KeyGetList() ([]models.Key, error) {
 	return data, nil
 }
 
+func (c *Client) KeyGet(fingerprint string) (*models.Key, error) {
+	url := fmt.Sprintf(c.baseURL+"/key/%s", fingerprint)
+	bytes, err := c.doGetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+
+	var keyResp models.KeyResponse
+	err = json.Unmarshal(bytes, &keyResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &keyResp.Key, nil
+}
+
 func (c *Client) KeySet(input *models.KeySetInput) (*models.Key, error) {
 	url := fmt.Sprintf(c.baseURL + "/key")
 
 	formData := neturl.Values{}
 	formData.Set("name", input.Name)
 	formData.Set("data", input.Data)
+
+	bytes, err := c.doPostFormRequest(url, formData)
+	if err != nil {
+		return nil, err
+	}
+
+	var keyResp models.KeyResponse
+	err = json.Unmarshal(bytes, &keyResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &keyResp.Key, nil
+}
+
+func (c *Client) KeyUpdateName(fingerprint, name string) (*models.Key, error) {
+	url := fmt.Sprintf(c.baseURL+"/key/%s", fingerprint)
+
+	formData := neturl.Values{}
+	formData.Set("name", name)
 
 	bytes, err := c.doPostFormRequest(url, formData)
 	if err != nil {
