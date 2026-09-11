@@ -159,7 +159,7 @@ func (s *ClientSuite) TestBootRescueSetWithKeySuccess(c *C) {
 
 		body, bodyErr := ioutil.ReadAll(r.Body)
 		c.Assert(bodyErr, IsNil)
-		c.Assert(string(body), Equals, "arch=64&authorized_key=fi%3Ang%3Aer%3Apr%3Ain%3At0%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00&os=linux")
+		c.Assert(string(body), Equals, "arch=64&authorized_key%5B%5D=fi%3Ang%3Aer%3Apr%3Ain%3At0%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00&os=linux")
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
@@ -360,7 +360,7 @@ func (s *ClientSuite) TestBootLinuxSetWithKeySuccess(c *C) {
 
 		body, bodyErr := ioutil.ReadAll(r.Body)
 		c.Assert(bodyErr, IsNil)
-		c.Assert(string(body), Equals, "arch=32&authorized_key=fi%3Ang%3Aer%3Apr%3Ain%3At0%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00&dist=CentOS+5.5+minimal&lang=en")
+		c.Assert(string(body), Equals, "arch=32&authorized_key%5B%5D=fi%3Ang%3Aer%3Apr%3Ain%3At0%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00%3A00&dist=CentOS+5.5+minimal&lang=en")
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

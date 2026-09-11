@@ -34,7 +34,7 @@ func (c *Client) BootRescueSet(id int, input *models.RescueSetInput) (*models.Re
 		formData.Set("arch", strconv.Itoa(input.Arch))
 	}
 	if len(input.AuthorizedKey) > 0 {
-		formData.Set("authorized_key", input.AuthorizedKey)
+		formData.Set("authorized_key[]", input.AuthorizedKey)
 	}
 
 	bytes, err := c.doPostFormRequest(url, formData)
@@ -95,7 +95,7 @@ func (c *Client) BootLinuxSet(id int, input *models.LinuxSetInput) (*models.Linu
 		formData.Set("lang", input.Lang)
 	}
 	if len(input.AuthorizedKey) > 0 {
-		formData.Set("authorized_key", input.AuthorizedKey)
+		formData.Set("authorized_key[]", input.AuthorizedKey)
 	}
 
 	bytes, err := c.doPostFormRequest(url, formData)
